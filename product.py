@@ -1,4 +1,8 @@
+import database
+
+
 class Product:
+
     _pln_to_eur = 4.0
     _pln_to_usd = 4.6
 
@@ -23,6 +27,7 @@ class Product:
             self._price_with_margin = None
             self._price_with_margin_eur = None
             self._price_with_margin_usd = None
+        database.insert_data(self, database.db, 'Products')
 
     def __str__(self):
         return f'Product: {self.__class__.__name__}\nBrand: {self.brand}, Name: {self.name}'

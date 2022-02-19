@@ -1,5 +1,7 @@
 from person import Person
 import random
+import database
+from prettytable import PrettyTable
 
 
 class Worker(Person):
@@ -9,6 +11,8 @@ class Worker(Person):
     def __init__(self, name, surname):
         super().__init__(name, surname)
         self._job_position = Worker._get_job_position()
+        Person.workers.append(self)
+        database.insert_data(self, database.db, 'Workers')
 
     @property
     def job_position(self):
@@ -30,13 +34,11 @@ class Worker(Person):
         else:
             print('We cannot hire a new employee.')
 
-    def add_worker_to_list(self):
-        Person.workers.append({'identity': f'{self.identity}', 'name': f'{self.name}',
-                               'surname': f'{self.surname}', 'job position': f'{self.job_position}'})
-
     @staticmethod
     def display_list_of_workers():
-        for worker in Person.workers:
-            for key, val in worker.items():
-                print(f'{key}: {val}')
-            print(20 * '-')
+        workers_table = PrettyTable()
+        workers_table.title = "LIST OF WORKERS"
+        workers_table.field_names = ['No.', 'Name', 'Surname', 'Position', 'Identity']
+        for index, worker in enumerate(Person.workers):
+            workers_table.add_row([index+1, worker.name, worker.surname, worker.job_position, worker.identity])
+        print(workers_table)

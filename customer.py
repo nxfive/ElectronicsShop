@@ -1,5 +1,7 @@
 from person import Person
+from prettytable import PrettyTable
 import time
+import database
 
 
 class Customer(Person):
@@ -11,6 +13,7 @@ class Customer(Person):
         self.shopping_cart = []
         self.is_paid = False
         self.exit_time = None
+        Person.customers.append(self)
 
     def __str__(self):
         return f'Entry time: {self.entry_time}\n{super().__str__()}'
@@ -38,19 +41,19 @@ class Customer(Person):
                                            product.name, product.price_with_margin))
 
     def del_from_shopping_cart(self, product_name):
-        for idx, product in enumerate(self.shopping_cart):
+        for index, product in enumerate(self.shopping_cart):
             if product_name == product[2]:
-                self.shopping_cart.remove(self.shopping_cart[idx])
+                self.shopping_cart.remove(self.shopping_cart[index])
 
     def list_shopping_cart(self):
-        for product in self.shopping_cart:
-            print(f'{product.__class__.__name__}, Brand: {product[0]}\nName: {product[1]}\nPrice: {product[2]}.')
+        shopping_cart_table = PrettyTable()
+        shopping_cart_table.title = 'SHOPPING CART'
+        shopping_cart_table.field_names = ['No.', 'Category', 'Brand', 'Name', 'Price']
+        for index, product in enumerate(self.shopping_cart):
+            shopping_cart_table.add_row([index+1, product[0], product[1], product[2], product[3]])
+        print(shopping_cart_table)
 
-    def add_customer_to_list(self):
-        Person.customers.append({'name': f'{self.name}', 'surname': f'{self.surname}',
-                                 'identity': f'{self.identity}'.zfill(3)})
-
-    def paid_for_items(self):
+    def pay_for_items(self):
         total = 0
         for product in self.shopping_cart:
             # for product is tuple with items(class_name, brand, name, price)
@@ -61,15 +64,18 @@ class Customer(Person):
             self.money -= total
             self.is_paid = True
             print(f'The remaining amount: {self.money}')
+            Customer.bye(self)
         else:
             print('You do not have enough money for these purchases.')
 
     @staticmethod
     def display_list_of_customers():
-        for customer in Person.customers:
-            for key, value in customer.items():
-                print(f'{key}: {value}')
-            print(20 * '-')
+        customers_table = PrettyTable()
+        customers_table.title = 'LIST OF CUSTOMERS'
+        customers_table.field_names = ['No.', 'Name', 'Surname', 'Items']
+        for index, customer in enumerate(Person.customers):
+            customers_table.add_row([index+1, customer.name, customer.surname, customer.shopping_cart])
+        print(customers_table)
 
     @staticmethod
     def hello():
@@ -78,3 +84,4 @@ class Customer(Person):
     def bye(self):
         print('Goodbye')
         self.exit_time = time.strftime('%H:%M:%S', time.localtime())
+        database.insert_data(self, database.db, 'Customers')
