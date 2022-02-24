@@ -1,5 +1,4 @@
 import random
-
 from product import Product
 
 
@@ -7,9 +6,12 @@ class Phone(Product):
 
     def __init__(self, brand, name, net_price):
         super().__init__(brand, name, net_price)
-        self._is_camera = Phone._choice_option()
+        self._is_camera = Phone._choice_for_camera()
         self._is_keyboard = Phone._choice_option()
-        self._is_touch_screen = Phone._choice_option()
+        if self._is_keyboard == 'NO':
+            self._is_touch_screen = 'YES'
+        else:
+            self._is_touch_screen = Phone._choice_option()
         self._memory = Phone._add_memory()
 
     def __str__(self):
@@ -40,3 +42,6 @@ class Phone(Product):
     def _add_memory():
         return random.choice([16, 32, 64, 128, 512])
 
+    @staticmethod
+    def _choice_for_camera():
+        return random.choice([8, 10, 12, 14, 16, 18, 20])

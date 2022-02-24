@@ -42,3 +42,4 @@ class Worker(Person):
         for index, worker in enumerate(Person.workers):
             workers_table.add_row([index+1, worker.name, worker.surname, worker.job_position, worker.identity])
         print(workers_table)
+

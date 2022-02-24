@@ -1,29 +1,33 @@
 from worker import Worker
 from customer import Customer
 from shop import Shop
+from laptop import Laptop
+from phone import Phone
 
 
 def main():
-    # create Shop instance with
-    shop = Shop('ElectronicShop', 30)
+    shop = Shop('Electronic', 25, 10)
+    print(shop.number_of_workers)
 
     # show max capacity
     shop.show_max_capacity()
 
+    # when we change capacity of the shop we can add some products manually
+
+    shop.max_capacity = 35
     # # create products
-    # laptop1 = Laptop('Leno', 'NT45', 4500)
-    # laptop2 = Laptop('Hpe', 'Mx123', 3450)
-    # phone1 = Phone('Telcom', 'A34', 3109)
-    # phone2 = Phone('Telxcom', 'X23', 5300)
+    laptop1 = Laptop('Leno', 'NT45', 4500)
+    laptop2 = Laptop('Hpe', 'Mx123', 3450)
+    laptop3 = Laptop('Apl', 'X Pro', 6000)
+    phone1 = Phone('Telcom', 'A34', 3109)
+    phone2 = Phone('Telxcom', 'X23', 5300)
 
-
-    # # add products to the shop
+    # when we manually create products we must add products to the shop
     # shop.add_product(laptop1)
     # shop.add_product(laptop2)
-    #
+    # shop.add_product(laptop3)
     # shop.add_product(phone1)
     # shop.add_product(phone2)
-
 
     # show price of the all products in the shop
     shop.get_all_products_price()

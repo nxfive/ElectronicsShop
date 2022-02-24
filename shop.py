@@ -2,20 +2,48 @@ import random
 from prettytable import PrettyTable
 from laptop import Laptop
 from phone import Phone
+from worker import Worker
 
 
 class Shop:
 
-    def __init__(self, name, max_capacity):
+    def __init__(self, name, max_capacity, number_of_workers):
         Shop._input_validation(name, 'name')
         self._name = name.capitalize()
         Shop._input_validation(max_capacity, 'max_capacity')
         self._max_capacity = max_capacity
-        products = Shop.create_products(self)
+        products = Shop._create_products(self)
         self.products = products
+        Shop._input_validation(number_of_workers, 'number_of_workers')
+        self._number_of_workers = number_of_workers
+        self._workers = self._create_workers(number_of_workers)
 
     @staticmethod
-    def create_phone():
+    def _create_workers(number):
+        workers = []
+        names = [name.rstrip() for name in open('names.txt', encoding='UTF-8')]
+        surnames = [surname.rstrip() for surname in open('surnames.txt', encoding='UTF-8')]
+        female_surnames = [surname for surname in surnames
+                           if not surname.endswith(('ski', 'cki', 'sny', 'zki'))]
+
+        male_surnames = [surname for surname in surnames
+                         if not surname.endswith(('ska', 'cka', 'zka', 'sna'))]
+
+        for _ in range(number):
+            choice_name = random.choice(names)
+            if choice_name.endswith('a'):
+                choice_surname = random.choice(female_surnames)
+                worker = Worker(choice_name, choice_surname)
+                workers.append(worker)
+            else:
+                choice_surname = random.choice(male_surnames)
+                worker = Worker(choice_name, choice_surname)
+                workers.append(worker)
+
+        return workers
+
+    @staticmethod
+    def _create_phone():
         brand = ['SamSam', 'Nova', 'Apl', 'Elgy']
         name_sa = ['se20 X', 'se21 Pro', 'se21 X', 'A 21i', 'A10x']
         name_no = ['No 1c', 'No', 'No 2x', 'Nok D12', 'Nok C0']
@@ -45,7 +73,7 @@ class Shop:
             return p1
 
     @staticmethod
-    def create_laptop():
+    def _create_laptop():
         brand = ['Eycer', 'Aply', 'Hapec', 'Leno']
         name_ey = ['MT1', 'MT200', 'Max Prof1', 'MaxProf2']
         name_len = ['Gamer One', 'Gamer X', 'Ideal200', 'IdealX', 'Nest Pro']
@@ -75,10 +103,10 @@ class Shop:
             l1 = Laptop(lap_brand, lap_name, net_price)
             return l1
 
-    def create_products(self):
+    def _create_products(self):
         products = []
         for i in range(self.max_capacity):
-            new_product = random.choice([Shop.create_laptop(), Shop.create_phone()])
+            new_product = random.choice([Shop._create_laptop(), Shop._create_phone()])
             products.append(new_product)
         return products
 
@@ -98,6 +126,12 @@ class Shop:
             if value < 0:
                 raise ValueError('Value of the maximum capacity must be greater than zero!')
 
+        elif var_name == 'number_of_workers':
+            if not isinstance(value, int):
+                raise TypeError(f'Value of the amount of workers must be an int object. Not {type(value).__name__}.')
+            if value <= 0:
+                raise ValueError('You have to hire some workers.')
+
     def _value_validation(self, value, var_name):
         if var_name == 'name':
             if not isinstance(value, str):
@@ -114,6 +148,21 @@ class Shop:
             if value < 0:
                 raise ValueError('Value of the maximum capacity must be greater than zero!')
             self._max_capacity = value
+
+        elif var_name == 'number_of_workers':
+            if not isinstance(value, int):
+                raise TypeError(f'Value of the maximum capacity must be an int object. Not {type(value).__name__}.')
+            if value < len(self.number_of_workers):
+                raise ValueError(f'You have to much workers in the shop. You have to fire someone.')
+            self.number_of_workers = value
+
+    @property
+    def number_of_workers(self):
+        return self._number_of_workers
+
+    @number_of_workers.setter
+    def number_of_workers(self, value):
+        Shop._value_validation(self, value, 'number_of_workers')
 
     @property
     def name(self):
@@ -180,9 +229,12 @@ class Shop:
         print(f'AMOUNT OF {product_name} IN >{self.name.upper()}<\n>{amount_name}')
 
     def get_list_of_all_products(self):
+        # add sorted list by category and index from 1 to ...
         table_of_all_products = PrettyTable()
         table_of_all_products.title = f'LIST OF PRODUCTS IN {self.name.upper()}'
         table_of_all_products.field_names = ['No.', 'Category', 'Brand', 'Name', 'Price']
+        table_of_all_products.sortby = 'Category'
+        table_of_all_products.sortby = 'No.'
         for index, product in enumerate(self.products):
             if not product.__dict__ == {}:
                 table_of_all_products.add_row([index+1, product.__class__.__name__, product.brand, product.name,
