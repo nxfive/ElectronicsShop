@@ -1,6 +1,6 @@
-from person import Person
+from project.person import Person
 import random
-import database
+from project import database
 from prettytable import PrettyTable
 
 

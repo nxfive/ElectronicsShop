@@ -1,8 +1,8 @@
 from worker import Worker
-from customer import Customer
-from shop import Shop
-from laptop import Laptop
-from phone import Phone
+from project.customer import Customer
+from project.shop import Shop
+from project.laptop import Laptop
+from project.phone import Phone
 
 
 def main():

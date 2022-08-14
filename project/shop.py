@@ -21,8 +21,8 @@ class Shop:
     @staticmethod
     def _create_workers(number):
         workers = []
-        names = [name.rstrip() for name in open('names.txt', encoding='UTF-8')]
-        surnames = [surname.rstrip() for surname in open('surnames.txt', encoding='UTF-8')]
+        names = [name.rstrip() for name in open('../files/names.txt', encoding='UTF-8')]
+        surnames = [surname.rstrip() for surname in open('../files/surnames.txt', encoding='UTF-8')]
         female_surnames = [surname for surname in surnames
                            if not surname.endswith(('ski', 'cki', 'sny', 'zki'))]
 

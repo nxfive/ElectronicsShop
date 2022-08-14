@@ -1,4 +1,4 @@
-import database
+from project import database
 
 
 class Product:

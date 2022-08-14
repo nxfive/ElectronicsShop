@@ -55,14 +55,14 @@ class Person:
         if not isinstance(value, str):
             raise TypeError(f'{var_name.capitalize()} cannot be {type(value).__name__} type.')
         if not value.isalpha():
-            raise ValueError(f'{var_name.capitalize()} cannot include integers.')
+            raise ValueError(f'{var_name.capitalize()} cannot include integers or other non alphabetic chars.')
 
     def _validation_value(self, value, var_name: str):
         """Validation of the value changed after instance was created."""
         if not isinstance(value, str):
-            raise TypeError(f'{value.capitalize()} cannot be {type(value).__name__} type.')
+            raise TypeError(f'{var_name.capitalize()} cannot be {type(value).__name__} type.')
         if not value.isalpha():
-            raise ValueError(f'{value.capitalize()} cannot include integers.')
+            raise ValueError(f'{var_name.capitalize()} cannot include integers or other non alphabetic chars.')
 
         if var_name == 'name':
             self._name = value
