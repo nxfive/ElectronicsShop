@@ -3,20 +3,21 @@ from prettytable import PrettyTable
 from laptop import Laptop
 from phone import Phone
 from worker import Worker
+from project.utils import input_validation as validate
 
 
 class Shop:
 
-    def __init__(self, name, max_capacity, number_of_workers):
-        Shop._input_validation(name, 'name')
+    def __init__(self, name, max_capacity, amount_of_workers):
+        validate(name, 'name')
         self._name = name.capitalize()
-        Shop._input_validation(max_capacity, 'max_capacity')
+        validate(max_capacity, 'max_capacity')
         self._max_capacity = max_capacity
         products = Shop._create_products(self)
         self.products = products
-        Shop._input_validation(number_of_workers, 'number_of_workers')
-        self._number_of_workers = number_of_workers
-        self._workers = self._create_workers(number_of_workers)
+        validate(amount_of_workers, 'amount_of_workers')
+        self._amount_of_workers = amount_of_workers
+        self._workers = self._create_workers(amount_of_workers)
 
     @staticmethod
     def _create_workers(number):
@@ -110,59 +111,14 @@ class Shop:
             products.append(new_product)
         return products
 
-    @staticmethod
-    def _input_validation(value, var_name):
-        if var_name == 'name':
-            if not isinstance(value, str):
-                raise TypeError(f'Name of the shop must be a str object. Not {type(value).__name__}.')
-            if not len(value) >= 3:
-                raise ValueError(f'Length name of the shop must be equal or greater than 3.')
-            if not value.isalpha():
-                raise ValueError('Name of the shop cannot include integers.')
-
-        elif var_name == 'max_capacity':
-            if not isinstance(value, int):
-                raise TypeError(f'Value of the maximum capacity must be an int object. Not {type(value).__name__}.')
-            if value < 0:
-                raise ValueError('Value of the maximum capacity must be greater than zero!')
-
-        elif var_name == 'number_of_workers':
-            if not isinstance(value, int):
-                raise TypeError(f'Value of the amount of workers must be an int object. Not {type(value).__name__}.')
-            if value <= 0:
-                raise ValueError('You have to hire some workers.')
-
-    def _value_validation(self, value, var_name):
-        if var_name == 'name':
-            if not isinstance(value, str):
-                raise TypeError(f'Name of the shop must be a str object. Not {type(value).__name__}.')
-            if not len(value) >= 3:
-                raise ValueError(f'Length name of the shop must be equal or greater than 3.')
-            if not value.isalpha():
-                raise ValueError('Name of the shop cannot include integers.')
-            self._name = value.capitalize()
-
-        elif var_name == 'max_capacity':
-            if not isinstance(value, int):
-                raise TypeError(f'Value of the maximum capacity must be an int object. Not {type(value).__name__}.')
-            if value < 0:
-                raise ValueError('Value of the maximum capacity must be greater than zero!')
-            self._max_capacity = value
-
-        elif var_name == 'number_of_workers':
-            if not isinstance(value, int):
-                raise TypeError(f'Value of the maximum capacity must be an int object. Not {type(value).__name__}.')
-            if value < len(self.number_of_workers):
-                raise ValueError(f'You have to much workers in the shop. You have to fire someone.')
-            self.number_of_workers = value
-
     @property
-    def number_of_workers(self):
-        return self._number_of_workers
+    def amount_of_workers(self):
+        return self._amount_of_workers
 
-    @number_of_workers.setter
-    def number_of_workers(self, value):
-        Shop._value_validation(self, value, 'number_of_workers')
+    @amount_of_workers.setter
+    def amount_of_workers(self, value):
+        validate(value, 'amount_of_workers')
+        self._amount_of_workers = value
 
     @property
     def name(self):
@@ -170,7 +126,8 @@ class Shop:
 
     @name.setter
     def name(self, value):
-        Shop._value_validation(self, value, 'name')
+        validate(value, 'name')
+        self._name = value
 
     @property
     def max_capacity(self):
@@ -178,7 +135,8 @@ class Shop:
 
     @max_capacity.setter
     def max_capacity(self, value):
-        Shop._value_validation(self, value, 'max_capacity')
+        validate(value, 'max_capacity')
+        self._max_capacity = value
 
     def show_max_capacity(self):
         print(f'Maximum shop capacity: {self.max_capacity}')

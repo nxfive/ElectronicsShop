@@ -1,4 +1,5 @@
 import random
+from project.utils import input_validation as validate
 
 
 class Person:
@@ -6,9 +7,9 @@ class Person:
     workers = []
 
     def __init__(self, name, surname):
-        Person._validation_input(name, 'name')
+        validate(name, 'name')
         self._name = name
-        Person._validation_input(surname, 'surname')
+        validate(surname, 'surname')
         self._surname = surname
         if self.__class__.__name__ == 'Customer' or self.__class__.__name__ == 'Worker':
             self.identity = Person._get_identity(self)
@@ -39,7 +40,8 @@ class Person:
 
     @name.setter
     def name(self, value):
-        Person._validation_value(self, value, 'name')
+        validate(value, 'name')
+        self._name = value
 
     @property
     def surname(self):
@@ -47,25 +49,5 @@ class Person:
 
     @surname.setter
     def surname(self, value):
-        Person._validation_value(self, value, 'surname')
-
-    @staticmethod
-    def _validation_input(value, var_name: str):
-        """Validation before create an instance"""
-        if not isinstance(value, str):
-            raise TypeError(f'{var_name.capitalize()} cannot be {type(value).__name__} type.')
-        if not value.isalpha():
-            raise ValueError(f'{var_name.capitalize()} cannot include integers or other non alphabetic chars.')
-
-    def _validation_value(self, value, var_name: str):
-        """Validation of the value changed after instance was created."""
-        if not isinstance(value, str):
-            raise TypeError(f'{var_name.capitalize()} cannot be {type(value).__name__} type.')
-        if not value.isalpha():
-            raise ValueError(f'{var_name.capitalize()} cannot include integers or other non alphabetic chars.')
-
-        if var_name == 'name':
-            self._name = value
-        else:
-            self._surname = value
-
+        validate(value, 'surname')
+        self._surname = value

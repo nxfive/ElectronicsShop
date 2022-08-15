@@ -1,4 +1,5 @@
 from project import database
+import string
 
 
 class Product:
@@ -8,11 +9,11 @@ class Product:
 
     __trade_margin = 0.25
 
-    def __init__(self, brand, name, net_price=None, price_with_margin=None):
+    def __init__(self, brand, prod_name, net_price=None, price_with_margin=None):
         Product._validate_input(brand, 'brand')
         self._brand = brand.capitalize()
-        Product._validate_input(name, 'name')
-        self._name = name.capitalize()
+        Product._validate_input(prod_name, 'prod_name')
+        self._prod_name = prod_name.capitalize()
         self._net_price = net_price
         self._price_with_margin = price_with_margin
 
@@ -45,25 +46,8 @@ class Product:
         elif var_name == 'name':
             if not isinstance(value, str):
                 raise TypeError(f"The {var_name} value must be str. Not {type(value).__name__}.")
-
-        elif var_name == 'net_price':
-            if not isinstance(value, (int, float)):
-                raise TypeError(f"The {var_name} value must be int or float object. Not {type(value).__name__}.")
-            if value < 0:
-                raise ValueError(f"The {var_name} value must be positive.")
-
-    def _validate_value(self, value, var_name):
-        """The function checks validations for data that will be overwritten for the specified instance."""
-        if var_name == 'brand':
-            if isinstance(value, str):
-                if not value.isalpha():
-                    raise ValueError(f'The {var_name} value cannot include integers.')
-            else:
-                raise TypeError(f"The {var_name} must be str. Not {type(value).__name__}.")
-
-        elif var_name == 'name':
-            if isinstance(value, (int, float)):
-                raise TypeError(f"The {var_name} value must be str. Not {type(value).__name__}.")
+            if not value.isalnum():
+                raise ValueError(f"The {var_name} value should only include alpha-numeric chars.")
 
         elif var_name == 'net_price':
             if isinstance(value, (int, float)):
@@ -97,21 +81,21 @@ class Product:
 
     @brand.setter
     def brand(self, value):
-        Product._validate_value(self, value, 'brand')
+        Product._validate_input(value, 'brand')
         print("The brand changed.")
         self._brand = value.capitalize()
 
     @property
-    def name(self):
-        return self._name
+    def prod_name(self):
+        return self._prod_name
 
-    @name.setter
-    def name(self, value):
-        Product._validate_value(self, value, 'name')
-        self._name = value.capitalize()
+    @prod_name.setter
+    def prod_name(self, value):
+        Product._validate_input(value, 'prod_name')
+        self._prod_name = value.capitalize()
 
-    @name.deleter
-    def name(self):
+    @prod_name.deleter
+    def prod_name(self):
         """If you delete a name of object you also
            delete the rest of the attributes. Object will
            still exist like an empty dict {}."""
@@ -124,26 +108,19 @@ class Product:
 
     @net_price.setter
     def net_price(self, value):
-        answer = input(f'Do you want to change the net price of {self.name} product [y/n]: ')
-        if answer.lower() == 'y' or answer.lower() == 'yes':
-            Product._validate_value(self, value, 'net_price')
-            print("Validation setting price complete.")
-            self._net_price = value
-            # at first I delete the price with margin
-            # that was related to the previous net_price
-            self._price_with_margin = None
-            print("Price with margin deleted.")
-            # now I set the new price with margin from new net_price
-            Product._convert_price_with_margin(self)
-        else:
-            print(f'Net price is still: {self.net_price}.')
+        Product._validate_input(value, 'net_price')
+        self._net_price = value
+        self._price_with_margin = None
+        Product._convert_price_with_margin(self)
+        Product._convert_price_with_margin_to_eur(self)
+        Product._convert_price_with_margin_to_usd(self)
 
     @net_price.deleter
     def net_price(self):
         print("Deleting...")
         for attr in list(self.__dict__.keys()):
             if attr.startswith('_price') or attr.startswith('_net'):
-                delattr(self, attr)
+                setattr(self, attr, None)
 
     @property
     def trade_margin(self):
@@ -160,3 +137,8 @@ class Product:
     @property
     def price_with_margin(self):
         return self._price_with_margin
+
+
+if __name__ == '__main__':
+    var = '123as'
+    int(var)
