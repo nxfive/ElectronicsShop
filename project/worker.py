@@ -1,4 +1,5 @@
 from project.person import Person
+from project.errors import ObjectPositionError
 import random
 from project import database
 from prettytable import PrettyTable
@@ -32,7 +33,7 @@ class Worker(Person):
         if isinstance(value, int) and value >= len(Person.workers):
             Worker._number_of_jobs = value
         else:
-            print('We cannot hire a new employee.')
+            raise ObjectPositionError(value, f'Cannot change the jobs to {value} place/s.')
 
     @staticmethod
     def display_list_of_workers():
