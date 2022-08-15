@@ -1,5 +1,5 @@
 from project import database
-import string
+from project.utils import input_validation as validate
 
 
 class Product:
@@ -10,15 +10,15 @@ class Product:
     __trade_margin = 0.25
 
     def __init__(self, brand, prod_name, net_price=None, price_with_margin=None):
-        Product._validate_input(brand, 'brand')
-        self._brand = brand.capitalize()
-        Product._validate_input(prod_name, 'prod_name')
-        self._prod_name = prod_name.capitalize()
+        validate(brand, 'brand')
+        self._brand = brand
+        validate(prod_name, 'prod_name')
+        self._prod_name = prod_name
         self._net_price = net_price
         self._price_with_margin = price_with_margin
 
         if net_price:
-            Product._validate_input(net_price, 'net_price')
+            validate(net_price, 'net_price')
             self._net_price = net_price
 
             Product._convert_price_with_margin(self)
@@ -31,30 +31,7 @@ class Product:
         database.insert_data(self, database.db, 'Products')
 
     def __str__(self):
-        return f'Product: {self.__class__.__name__}\nBrand: {self.brand}, Name: {self.name}'
-
-    @staticmethod
-    def _validate_input(value, var_name):
-        """The function checks data validation before creating an instance.
-        If the entered data is correct, an instance of the class will be created."""
-        if var_name == 'brand':
-            if not isinstance(value, str):
-                raise TypeError(f"The {var_name} value must be str. Not {type(value).__name__}.")
-            if not value.isalpha():
-                raise ValueError(f'The {var_name} value cannot include integers.')
-
-        elif var_name == 'name':
-            if not isinstance(value, str):
-                raise TypeError(f"The {var_name} value must be str. Not {type(value).__name__}.")
-            if not value.isalnum():
-                raise ValueError(f"The {var_name} value should only include alpha-numeric chars.")
-
-        elif var_name == 'net_price':
-            if isinstance(value, (int, float)):
-                if value < 0:
-                    raise ValueError(f"The {var_name} value must be positive.")
-            else:
-                raise TypeError(f"The {var_name} must be int or float object. Not {type(value).__name__}.")
+        return f'Class: {self.__class__.__name__}, brand: {self.brand}, name: {self.prod_name}'
 
     def _convert_price_with_margin(self):
         if self.net_price:
@@ -81,9 +58,8 @@ class Product:
 
     @brand.setter
     def brand(self, value):
-        Product._validate_input(value, 'brand')
-        print("The brand changed.")
-        self._brand = value.capitalize()
+        validate(value, 'brand')
+        self._brand = value
 
     @property
     def prod_name(self):
@@ -91,8 +67,8 @@ class Product:
 
     @prod_name.setter
     def prod_name(self, value):
-        Product._validate_input(value, 'prod_name')
-        self._prod_name = value.capitalize()
+        validate(value, 'prod_name')
+        self._prod_name = value
 
     @prod_name.deleter
     def prod_name(self):
@@ -108,7 +84,7 @@ class Product:
 
     @net_price.setter
     def net_price(self, value):
-        Product._validate_input(value, 'net_price')
+        validate(value, 'net_price')
         self._net_price = value
         self._price_with_margin = None
         Product._convert_price_with_margin(self)
@@ -137,8 +113,3 @@ class Product:
     @property
     def price_with_margin(self):
         return self._price_with_margin
-
-
-if __name__ == '__main__':
-    var = '123as'
-    int(var)
