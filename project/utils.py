@@ -34,38 +34,66 @@ def input_validation(value, var_name):
 
 
 def create_product(class_name):
+    """
+        The function returns tuple with values needed to create a product instance.
+    """
 
-    def choice_attr_values(brand, products):
-        brand = random.choice(brand)
+    def choice_attr_values(brands, products):
+        brand = random.choice(brands)
         net_price = random.randint(2200, 4800)
         name = ''
-        for item in products:
-            for prod_brand, prod_names in item:
-                if prod_brand == brand:
-                    random.shuffle(prod_names)
-                    name = prod_names[0]
+        for product_list in products:
+            for key, value in product_list.items():
+                if key == brand:
+                    name += random.choice(value)
+                break
         return brand, name, net_price
 
     if class_name in ('Phone', 'phone'):
         create_product.phone_brand = ['SamSam', 'Nova', 'Apl', 'Elgy']
         create_product.phone_products = [
             {'SamSam': ['se20', 'se21pro', 'se21X', 'A21i', 'A10x']},
-            {'Nova': ['No1c', 'No', 'No2x', 'NokD12', 'NokC0']},
-            {'Apl': ['Prod11', 'ProXc12', 'ProXc', 'ProM1x']},
-            {'Elgy': ['L1Rex', 'L2Pe', 'L23', 'L23P', 'LXp']}
+            {'Nova': ['No1c', 'No1', 'No2x', 'NokD12', 'NokC0']},
+            {'Apl': ['Prod11', 'ProXc12', 'ProXc1', 'ProM1x']},
+            {'Elgy': ['L1Rex', 'L2Pe', 'L23', 'L23P', 'LXp2']}
         ]
-        return choice_attr_values(create_product.phone_brand, create_product.phone_products)
+        values = choice_attr_values(create_product.phone_brand, create_product.phone_products)
+        return values
 
     if class_name in ('Laptop', 'laptop'):
         create_product.laptop_brand = ['Eycer', 'Aply', 'Hapec', 'Leno']
         create_product.laptop_products = [
-            {'Eycer': ['MT1', 'MT200', 'Max Prof1', 'MaxProf2']},
-            {'Aply': ['Gamer One', 'Gamer X', 'Ideal200', 'IdealX', 'Nest Pro']},
-            {'Hapec': ['Fusion P', 'FX One', 'FX Two', 'Fusion Pro']},
-            {'Leno': ['Pro 10', 'Pro 11', 'Pro 12', 'Max PX', 'Max X4']}
+            {'Eycer': ['MT1', 'MT200', 'MaxProf1', 'MaxProf2']},
+            {'Aply': ['Gamer1', 'Gamer2X', 'Ideal200', 'Ideal3X', 'NestPro1']},
+            {'Hapec': ['FusionPx1', 'FXOne2', 'FXTwo3', 'FusionPro1']},
+            {'Leno': ['Pro10', 'Pro11', 'Pro12', 'MaxPX10', 'MaxX4']}
         ]
-        return choice_attr_values(create_product.phone_brand, create_product.phone_products)
+        values = choice_attr_values(create_product.laptop_brand, create_product.laptop_products)
+        return values
 
 
-if __name__ == '__main__':
-    create_product('phone')
+def create_worker():
+    """
+        The function returns tuple with values needed to create a worker instance.
+    """
+
+    create_worker.names = [
+        name.rstrip() for name in open('../files/names.txt', encoding='UTF-8').readlines()
+    ]
+    create_worker.surnames = [
+        surname.rstrip() for surname in open('../files/surnames.txt', encoding='UTF-8').readlines()
+    ]
+
+    create_worker.female_surnames = [
+        surname for surname in create_worker.surnames if not surname.endswith(('ski', 'cki', 'sny', 'zki', 'y'))
+    ]
+    create_worker.male_surnames = [
+        surname for surname in create_worker.surnames if not surname.endswith(('ska', 'cka', 'zka', 'sna', 'a'))
+    ]
+    choice_name = random.choice(create_worker.names)
+    if choice_name.endswith('a'):
+        choice_surname = random.choice(create_worker.female_surnames)
+        return choice_name, choice_surname
+    else:
+        choice_surname = random.choice(create_worker.male_surnames)
+        return choice_name, choice_surname
