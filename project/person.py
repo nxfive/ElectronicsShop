@@ -12,9 +12,9 @@ class Person:
         validate(surname, 'surname')
         self._surname = surname
         if self.__class__.__name__ == 'Customer' or self.__class__.__name__ == 'Worker':
-            self.identity = Person._get_identity(self)
+            self._identity = Person._get_identity(self)
         else:
-            self.identity = None
+            self._identity = None
 
     def __str__(self):
         if not self.identity:
@@ -29,10 +29,9 @@ class Person:
 
     def _get_identity(self):
         if self.__class__.__name__ == "Customer":
-            self.identity = len(Person.customers) + 1
+            return len(Person.customers) + 1
         elif self.__class__.__name__ == 'Worker':
-            self.identity = random.randint(123456, 234567)
-        return self.identity
+            return random.randint(123456, 234567)
 
     @property
     def name(self):
@@ -51,3 +50,7 @@ class Person:
     def surname(self, value):
         validate(value, 'surname')
         self._surname = value
+
+    @property
+    def identity(self):
+        return self._identity
