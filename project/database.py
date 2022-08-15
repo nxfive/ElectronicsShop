@@ -46,7 +46,7 @@ def insert_data(obj_instance, database_instance, name_table: str):
 
     if name_table == 'Products':
         database_instance.insert_data(name_table, None, obj_instance.__class__.__name__,
-                                      obj_instance.brand, obj_instance.name, obj_instance.net_price,
+                                      obj_instance.brand, obj_instance.prod_name, obj_instance.net_price,
                                       obj_instance.price_with_margin)
 
 
