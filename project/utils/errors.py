@@ -6,8 +6,7 @@ class NoSpaceError(Exception):
             message -- description of the error
     """
 
-    def __init__(self, item, message):
-        self.item = item
+    def __init__(self, message):
         self.message = message
         super().__init__(self.message)
 
@@ -26,9 +25,10 @@ class ItemNotFoundError(Exception):
         super().__init__(self.message)
 
 
-class ObjectPositionError(Exception):
+class ChangeContainerSizeError(Exception):
     """
-            Raised when you want to give a value less than the amount of the container items.
+            Raised when you want to increase size of the container to less than
+            amount of items in.
             Attributes:
                 value -- wanted value which caused an error
                 message -- description of the error

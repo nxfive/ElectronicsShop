@@ -1,5 +1,5 @@
 import random
-from project.product import Product
+from project.product.product import Product
 
 
 class Laptop(Product):

@@ -1,5 +1,6 @@
-import random
-from project.utils import input_validation as validate
+import uuid
+from time import time
+from project.utils.utils import input_validation as validate
 
 
 class Person:
@@ -17,21 +18,16 @@ class Person:
             self._identity = None
 
     def __str__(self):
-        if not self.identity:
-            return f"{self.__class__.__name__}\nName: {self.name}\nSurname: {self.surname}\n--------------------"
-        return f"{self.__class__.__name__}\nName: {self.name}\n" \
-               f"Surname: {self.surname}\nID: {self.identity}\n--------------------"
+        return f"[{self.__class__.__name__}] Name: {self.name}, Surname: {self.surname}, ID: {self.identity}"
 
     def __repr__(self):
-        if not self.identity:
-            return f"{self.__class__.__name__}=(name: {self.name}, surname: {self.surname})"
-        return f"{self.__class__.__name__}=(name: {self.name}, surname: {self.surname}, identity: {self.identity})"
+        return f"{self.__class__.__name__}=(name: {self.name}, surname: {self.surname}, id: {self.identity})"
 
     def _get_identity(self):
         if self.__class__.__name__ == "Customer":
-            return len(Person.customers) + 1
+            return int(round((time() * 1000), 2))
         elif self.__class__.__name__ == 'Worker':
-            return random.randint(123456, 234567)
+            return uuid.uuid4().fields[-1]
 
     @property
     def name(self):

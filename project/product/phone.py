@@ -1,12 +1,12 @@
 import random
-from project.product import Product
+from project.product.product import Product
 
 
 class Phone(Product):
 
     def __init__(self, brand, prod_name, net_price):
         super().__init__(brand, prod_name, net_price)
-        self._is_camera = Phone._choice_for_camera()
+        self._camera = Phone._choice_for_camera()
         self._is_keyboard = random.choice(('YES', 'NO'))
         if self._is_keyboard == 'NO':
             self._is_touch_screen = 'YES'
@@ -18,8 +18,8 @@ class Phone(Product):
         return f'{super().__str__()}, net_price: {self.net_price}'
 
     @property
-    def is_camera(self):
-        return self._is_camera
+    def camera(self):
+        return self.camera
 
     @property
     def is_keyboard(self):

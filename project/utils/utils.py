@@ -76,12 +76,11 @@ def create_worker():
     """
         The function returns tuple with values needed to create a worker instance.
     """
-
     create_worker.names = [
-        name.rstrip() for name in open('../files/names.txt', encoding='UTF-8').readlines()
+        name.rstrip() for name in open('utils/files/names.txt', encoding='UTF-8').readlines()
     ]
     create_worker.surnames = [
-        surname.rstrip() for surname in open('../files/surnames.txt', encoding='UTF-8').readlines()
+        surname.rstrip() for surname in open('utils/files/surnames.txt', encoding='UTF-8').readlines()
     ]
 
     create_worker.female_surnames = [
@@ -97,3 +96,11 @@ def create_worker():
     else:
         choice_surname = random.choice(create_worker.male_surnames)
         return choice_name, choice_surname
+
+
+def create_customer():
+    name, surname = create_worker()
+    cities = [city.rstrip() for city in open('utils/files/cities.txt', encoding='UTF-8').readlines()]
+    choice_city = random.choice(cities)
+    money = random.randint(1000, 9999)
+    return name, surname, choice_city, money

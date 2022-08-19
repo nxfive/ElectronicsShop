@@ -1,10 +1,12 @@
 import random
-from project.errors import NoSpaceError, ItemNotFoundError
+
+from person.customer import Customer
+from project.utils.errors import NoSpaceError, ItemNotFoundError
 from prettytable import PrettyTable
-from project.worker import Worker
-from project.utils import input_validation as validate, create_product, create_worker
-from project.laptop import Laptop
-from project.phone import Phone
+from project.person.worker import Worker
+from project.utils.utils import input_validation as validate, create_product, create_worker
+from project.product.laptop import Laptop
+from project.product.phone import Phone
 
 
 class Shop:
@@ -18,25 +20,6 @@ class Shop:
         self._amount_of_workers = amount_of_workers
         self._workers = self._create_workers()
         self._products = self._create_products()
-
-    def _create_workers(self):
-        workers = []
-        for i in range(self.amount_of_workers):
-            worker = Worker(*(create_worker()))
-            workers.append(worker)
-        return workers
-
-    def _create_products(self):
-        products = []
-        for i in range(self.max_capacity):
-            class_choice = random.choice(('Phone', 'Laptop'))
-            if class_choice == 'Phone':
-                new_product = Phone(*(create_product('Phone')))
-                products.append(new_product)
-            else:
-                new_product = Laptop(*(create_product('Laptop')))
-                products.append(new_product)
-        return products
 
     @property
     def products(self):
@@ -76,12 +59,41 @@ class Shop:
     def show_max_capacity(self):
         print(f'Maximum shop capacity: {self.max_capacity}')
 
-    def add_product(self, product):
-        if len(self.products) < self._max_capacity:
-            self.products.append(product)
-            print('Product has been added.')
-        else:
-            raise NoSpaceError(product, f'No space for `{product.prod_name}` product.')
+    def _create_workers(self):
+        workers = []
+        for _ in range(self.amount_of_workers):
+            worker = Worker(*(create_worker()))
+            workers.append(worker)
+        return workers
+
+    def _create_products(self):
+        products = []
+        for _ in range(self.max_capacity):
+            class_choice = random.choice(('Phone', 'Laptop'))
+            if class_choice == 'Phone':
+                new_product = Phone(*(create_product('Phone')))
+                products.append(new_product)
+            else:
+                new_product = Laptop(*(create_product('Laptop')))
+                products.append(new_product)
+        return products
+
+    def add_product(self, amount):
+        global i
+        for i in range(amount):
+            print(len(self.products))
+            print(self.max_capacity)
+            if len(self.products) < self.max_capacity:
+                class_choice = random.choice(('Phone', 'Laptop'))
+                if class_choice == 'Phone':
+                    phone = Phone(*(create_product('Phone')))
+                    self.products.append(phone)
+                else:
+                    laptop = Laptop(*(create_product('Laptop')))
+                    self.products.append(laptop)
+                print('Product has been added.')
+            else:
+                raise NoSpaceError(f'No space for another product. Added {i}/{amount} products.')
 
     def get_all_products_price(self):
         all_products_price = 0
@@ -110,8 +122,6 @@ class Shop:
             raise ItemNotFoundError(product_brand, f'We do not have {product_brand} in our shop.')
 
     def get_amount_of_product_name(self, product_name):
-        '''self -> shop.
-           product_name -> str, name of product'''
         amount_name = 0
         product_brand = ''
         for product in self.products:
@@ -128,7 +138,6 @@ class Shop:
         table_of_all_products.title = f'LIST OF PRODUCTS IN {self.name.upper()}'
         table_of_all_products.field_names = ['No.', 'Category', 'Brand', 'Name', 'Price']
         table_of_all_products.sortby = 'Category'
-        table_of_all_products.sortby = 'No.'
         for index, product in enumerate(self.products):
             if not product.__dict__ == {}:
                 table_of_all_products.add_row([index + 1, product.__class__.__name__, product.brand, product.prod_name,
@@ -141,6 +150,15 @@ class Shop:
         try:
             choice = int(input(f'[1 - {len(self.products)}]: '))
             product = self.products[choice - 1]
-            print(product)  # {product}: __str__ format
+            print(f"{product.__dict__}")
         except (ValueError, IndexError):
             print('Invalid input. Try again.')
+
+    @staticmethod
+    def display_list_of_customers():
+        customers_table = PrettyTable()
+        customers_table.title = 'LIST OF CUSTOMERS'
+        customers_table.field_names = ['No.', 'Name', 'Surname', 'Items']
+        for index, customer in enumerate(Customer.customers):
+            customers_table.add_row([index+1, customer.name, customer.surname, customer.shopping_cart])
+        print(customers_table)

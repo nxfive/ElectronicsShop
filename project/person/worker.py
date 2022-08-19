@@ -1,7 +1,7 @@
-from project.person import Person
-from project.errors import ObjectPositionError
+from project.person.person import Person
+from project.utils.errors import ChangeContainerSizeError
 import random
-from project import database
+from project.database.database import *
 from prettytable import PrettyTable
 
 
@@ -13,7 +13,7 @@ class Worker(Person):
         super().__init__(name, surname)
         self._job_position = Worker._get_job_position()
         Person.workers.append(self)
-        database.insert_data(self, database.db, 'Workers')
+        insert_data(self, database, 'workers')
 
     @property
     def job_position(self):
@@ -33,7 +33,7 @@ class Worker(Person):
         if isinstance(value, int) and value >= len(Person.workers):
             Worker._number_of_jobs = value
         else:
-            raise ObjectPositionError(value, f'Cannot change the jobs to {value} place/s.')
+            raise ChangeContainerSizeError(value, f'Cannot change the jobs to {value} place/s.')
 
     @staticmethod
     def display_list_of_workers():
@@ -43,4 +43,3 @@ class Worker(Person):
         for index, worker in enumerate(Person.workers):
             workers_table.add_row([index+1, worker.name, worker.surname, worker.job_position, worker.identity])
         print(workers_table)
-
