@@ -27,7 +27,7 @@ class Database:
         self.connection.commit()
 
     def update_customer(self, table_name, instance):
-        self.cursor.execute(f"UPDATE {table_name} SET bill = '{instance.bill}', exit_time = '{instance.exit_time}' "
+        self.cursor.execute(f"UPDATE {table_name} SET bill = '{instance._bill}', exit_time = '{instance._exit_time}' "
                             f"WHERE identity = {instance.identity}")
         self.connection.commit()
 
@@ -61,8 +61,8 @@ def insert_data(obj_instance, database_instance, table_name: str):
 
     if table_name == 'customers':
         database_instance.insert(table_name, (obj_instance.identity, obj_instance.name, obj_instance.surname,
-                                              obj_instance.email, obj_instance.city, obj_instance.bill,
-                                              obj_instance.entry_time, obj_instance.exit_time))
+                                              obj_instance.email, obj_instance.city, obj_instance._bill,
+                                              obj_instance.entry_time, obj_instance._exit_time))
 
     if table_name == 'products':
         database_instance.insert(table_name, (obj_instance.identity, obj_instance.__class__.__name__,
