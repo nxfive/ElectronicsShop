@@ -11,18 +11,13 @@ class Worker(Person):
 
     def __init__(self, name, surname):
         super().__init__(name, surname)
-        self._job_position = Worker._get_job_position()
+        self._job_position = random.choice(['seller', 'cashier'])
         Person.workers.append(self)
         insert_data(self, database, 'workers')
 
     @property
     def job_position(self):
         return self._job_position
-
-    @staticmethod
-    def _get_job_position():
-        jobs = ['seller', 'cashier']
-        return random.choice(jobs)
 
     @property
     def number_of_jobs(self):
