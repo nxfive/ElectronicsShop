@@ -32,9 +32,6 @@ class Product:
             self._price_with_margin_usd = None
         insert_data(self, database, 'products')
 
-    def __del__(self):
-        print('deleted')
-
     def __str__(self):
         return f'[{self.__class__.__name__}] brand: {self.brand}, prod_name: {self.prod_name}'
 
