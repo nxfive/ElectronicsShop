@@ -32,6 +32,9 @@ class Product:
             self._price_with_margin_usd = None
         insert_data(self, database, 'products')
 
+    def __del__(self):
+        print('deleted')
+
     def __str__(self):
         return f'[{self.__class__.__name__}] brand: {self.brand}, prod_name: {self.prod_name}'
 
@@ -70,14 +73,6 @@ class Product:
     def prod_name(self, value):
         validate(value, 'prod_name')
         self._prod_name = value
-
-    @prod_name.deleter
-    def prod_name(self):
-        """If you delete a name of object you also
-           delete the rest of the attributes. Object will
-           still exist like an empty dict {}."""
-        for attr in list(self.__dict__.keys()):
-            delattr(self, attr)
 
     @property
     def net_price(self):
