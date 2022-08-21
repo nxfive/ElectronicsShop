@@ -24,15 +24,3 @@ class Laptop(Product):
     @property
     def type_drive(self):
         return self._type_drive
-
-    @staticmethod
-    def _add_ram_memory():
-        return random.choice([4, 8, 16, 64])
-
-    @staticmethod
-    def _add_built_in_memory():
-        return random.choice([128, 256, 512, 1024])
-
-    @staticmethod
-    def _add_type_drive():
-        return random.choice(['SSD', 'SSHD', 'HDD'])
