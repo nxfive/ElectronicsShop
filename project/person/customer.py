@@ -11,7 +11,7 @@ class Customer(Person):
         super().__init__(name, surname)
         self.email = f'{self.name}.{self.surname}{str(self.identity)[-3:]}@mail.com'
         self.city = city
-        self.entry_time = Customer.get_entry_time()
+        self.entry_time = time.strftime('%H:%M:%S %d.%m.%Y', time.localtime())
         self.money = money
         self.shop = shop_instance
         self.shopping_cart = ShoppingCart()
@@ -23,10 +23,6 @@ class Customer(Person):
 
     def __str__(self):
         return f'{super().__str__()}, ENTRY TIME: {self.entry_time}'
-
-    @staticmethod
-    def get_entry_time():
-        return time.strftime('%H:%M:%S %d.%m.%Y', time.localtime())
 
     def make_action(self, count):
         for i in range(count):
