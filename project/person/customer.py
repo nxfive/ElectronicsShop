@@ -25,6 +25,10 @@ class Customer(Person):
         return f'{super().__str__()}, ENTRY TIME: {self.entry_time}'
 
     @property
+    def email(self):
+        return self._email
+
+    @property
     def city(self):
         return self._city
 
