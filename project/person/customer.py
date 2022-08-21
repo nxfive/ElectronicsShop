@@ -58,6 +58,7 @@ class Customer(Person):
                 total += product.price_with_margin
             if self._money >= total:
                 for product in self.shopping_cart.items:
+                    self._shop._sold_products.append(product)
                     database.update_product('products', product.identity)
                     insert_data(product, database, 'sold')
                 self._money -= total
