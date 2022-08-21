@@ -4,7 +4,7 @@ from project.shop.shop import Shop
 from unittest.mock import patch
 from project.product.phone import Phone
 from project.product.laptop import Laptop
-from project.utils.errors import NoSpaceError
+from project.utils.errors import NoSpaceError, ItemNotFoundError
 
 test_params = [
     ('int_value', 12345),
@@ -137,6 +137,10 @@ class TestCreateProducts(unittest.TestCase):
 
     @patch('random.choice')
     def test_create_laptop_instances(self, mocked_choice):
+        """
+            Test create object laptop >
+
+        """
         mocked_choice.return_value = 'Laptop'
         self.shop.products.clear()
         for product in self.shop.products:
@@ -144,6 +148,9 @@ class TestCreateProducts(unittest.TestCase):
 
     @patch('random.choice')
     def test_create_phone_instances(self, mocked_choice):
+        """
+            Test create object phone >
+        """
         mocked_choice.return_value = 'Phone'
         self.shop.products.clear()
         for product in self.shop.products:
@@ -176,6 +183,31 @@ class TestAddProduct(unittest.TestCase):
         self.shop.add_product(1)
         second = len(self.shop.products)
         self.assertEqual(first + 1, second)
+
+
+class TestGetAmountOfProduct(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        print()
+        print(f'setting up class: {cls.__name__}')
+        cls.shop = Shop('Name', 20, 20)
+
+    def test_amount_of_not_existing_brand(self):
+        """
+            Test amount of not existing brand >
+            should raise an error.
+        """
+        with self.assertRaises(ItemNotFoundError):
+            self.shop.get_amount_of_product_brand('BRAND')
+
+    def test_amount_of_not_existing_product_name(self):
+        """
+            Test amount of not existing name >
+            should raise an error.
+        """
+        with self.assertRaises(ItemNotFoundError):
+            self.shop.get_amount_of_product_name('NONAME')
 
 
 if __name__ == '__main__':
