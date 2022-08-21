@@ -6,9 +6,9 @@ class Laptop(Product):
 
     def __init__(self, brand, prod_name, net_price):
         super().__init__(brand, prod_name, net_price)
-        self._ram_memory = Laptop._add_ram_memory()
-        self._built_in_memory = Laptop._add_built_in_memory()
-        self._type_drive = Laptop._add_type_drive()
+        self._ram_memory = random.choice([4, 8, 16, 64])
+        self._built_in_memory = random.choice([128, 256, 512, 1024])
+        self._type_drive = random.choice(['SSD', 'SSHD', 'HDD'])
 
     def __str__(self):
         return f'{super().__str__()}, net_price: {self.net_price}'
