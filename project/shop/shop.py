@@ -12,6 +12,7 @@ from project.product.phone import Phone
 class Shop:
 
     _number_of_jobs = 5
+    _sold_products = []
 
     def __init__(self, name, max_capacity, amount_of_workers):
         validate(name, 'name')
