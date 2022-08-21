@@ -2,7 +2,6 @@ from project.person.person import Person
 from project.utils.errors import ChangeContainerSizeError
 import random
 from project.database.database import *
-from prettytable import PrettyTable
 
 
 class Worker(Person):
@@ -29,12 +28,3 @@ class Worker(Person):
             Worker._number_of_jobs = value
         else:
             raise ChangeContainerSizeError(value, f'Cannot change the jobs to {value} place/s.')
-
-    @staticmethod
-    def display_list_of_workers():
-        workers_table = PrettyTable()
-        workers_table.title = "LIST OF WORKERS"
-        workers_table.field_names = ['No.', 'Name', 'Surname', 'Position', 'Identity']
-        for index, worker in enumerate(Person.workers):
-            workers_table.add_row([index+1, worker.name, worker.surname, worker.job_position, worker.identity])
-        print(workers_table)
