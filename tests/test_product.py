@@ -1,5 +1,5 @@
 import unittest
-from project.product import Product
+from project.product.product import Product
 from parameterized import parameterized
 
 
@@ -135,3 +135,7 @@ class TestAllPriceAttributes(unittest.TestCase):
         self.assertIsNone(self.product.price_with_margin)
         self.assertIsNone(self.product._price_with_margin_eur)
         self.assertIsNone(self.product._price_with_margin_usd)
+
+
+if __name__ == '__main__':
+    unittest.main()
