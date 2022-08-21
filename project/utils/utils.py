@@ -77,10 +77,10 @@ def create_worker():
         The function returns tuple with values needed to create a worker instance.
     """
     create_worker.names = [
-        name.rstrip() for name in open('utils/files/names.txt', encoding='UTF-8').readlines()
+        name.rstrip() for name in open('project/utils/files/names.txt', encoding='UTF-8').readlines()
     ]
     create_worker.surnames = [
-        surname.rstrip() for surname in open('utils/files/surnames.txt', encoding='UTF-8').readlines()
+        surname.rstrip() for surname in open('project/utils/files/surnames.txt', encoding='UTF-8').readlines()
     ]
 
     create_worker.female_surnames = [
