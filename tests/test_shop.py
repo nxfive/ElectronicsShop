@@ -1,10 +1,10 @@
 import unittest
 from parameterized import parameterized
-from project.shop import Shop
+from project.shop.shop import Shop
 from unittest.mock import patch
-from project.phone import Phone
-from project.laptop import Laptop
-from project.errors import NoSpaceError
+from project.product.phone import Phone
+from project.product.laptop import Laptop
+from project.utils.errors import NoSpaceError
 
 test_params = [
     ('int_value', 12345),
@@ -163,8 +163,7 @@ class TestAddProduct(unittest.TestCase):
             Shop instance should raise an error when
             adds another product.
         """
-        phone = Phone('Brand', 'Name1', 2500)
-        self.assertRaises(NoSpaceError, self.shop.add_product, phone)
+        self.assertRaises(NoSpaceError, self.shop.add_product, 2)
 
     def test_add_new_product_laptop_with_space(self):
         """
@@ -172,10 +171,11 @@ class TestAddProduct(unittest.TestCase):
             Capacity of shop instance must increase by 1 to add
             a new product.
         """
-        laptop = Laptop('Brand', 'Name2', 3000)
+        first = len(self.shop.products)
         self.shop.max_capacity += 1
-        self.shop.add_product(laptop)
-        self.assertIn(laptop, self.shop.products)
+        self.shop.add_product(1)
+        second = len(self.shop.products)
+        self.assertEqual(first + 1, second)
 
 
 if __name__ == '__main__':
