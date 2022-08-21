@@ -1,7 +1,7 @@
 import random
 
 from project.person.customer import Customer
-from project.utils.errors import NoSpaceError, ItemNotFoundError
+from project.utils.errors import NoSpaceError, ItemNotFoundError, ChangeContainerSizeError
 from prettytable import PrettyTable
 from project.person.worker import Worker
 from project.utils.utils import input_validation as validate, create_product, create_worker
@@ -10,6 +10,8 @@ from project.product.phone import Phone
 
 
 class Shop:
+
+    _number_of_jobs = 5
 
     def __init__(self, name, max_capacity, amount_of_workers):
         validate(name, 'name')
@@ -123,12 +125,9 @@ class Shop:
 
     def get_amount_of_product_name(self, product_name):
         amount_name = 0
-        product_brand = ''
         for product in self.products:
-            if product.prod_name == product_name.capitalize():
+            if product.prod_name == product_name:
                 amount_name += 1
-                if not product_brand:
-                    product_brand += product.brand
         if amount_name == 0:
             raise ItemNotFoundError(product_name, f'We do not have {product_name} in our shop.')
 
@@ -170,3 +169,10 @@ class Shop:
         for index, worker in enumerate(Worker.workers):
             workers_table.add_row([index+1, worker.name, worker.surname, worker.job_position, worker.identity])
         print(workers_table)
+
+    @classmethod
+    def change_number_of_jobs(cls, value):
+        if isinstance(value, int) and value >= len(Worker.workers):
+            Worker._number_of_jobs = value
+        else:
+            raise ChangeContainerSizeError(value, f'Cannot change the jobs to {value} place/s.')
