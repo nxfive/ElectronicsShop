@@ -1,74 +1,19 @@
-from worker import Worker
-from project.customer import Customer
-from project.shop import Shop
-from project.laptop import Laptop
-from project.phone import Phone
+from project.shop.shop import Shop
+from project.person.customer import Customer
+from project.utils.utils import create_customer
+import random
 
 
 def main():
-    shop = Shop('Electronic', 25, 10)
-    print(shop.number_of_workers)
+    shop = Shop('Electronic', 20, 5)
+    for i in range(10):
+        customer = Customer(shop, *(create_customer()))
+        customer.make_action(random.randint(1, 5))
+    revenue = 0
+    for product in shop._sold_products:
+        revenue += product.price_with_margin - product.net_price
 
-    # show max capacity
-    shop.show_max_capacity()
-
-    # when we change capacity of the shop we can add some products manually
-
-    shop.max_capacity = 35
-    # # create products
-    laptop1 = Laptop('Leno', 'NT45', 4500)
-    laptop2 = Laptop('Hpe', 'Mx123', 3450)
-    laptop3 = Laptop('Apl', 'X Pro', 6000)
-    phone1 = Phone('Telcom', 'A34', 3109)
-    phone2 = Phone('Telxcom', 'X23', 5300)
-
-    # when we manually create products we must add products to the shop
-    # shop.add_product(laptop1)
-    # shop.add_product(laptop2)
-    # shop.add_product(laptop3)
-    # shop.add_product(phone1)
-    # shop.add_product(phone2)
-
-    # show price of the all products in the shop
-    shop.get_all_products_price()
-
-    # # show amount of product brand
-    # shop.get_amount_of_product_brand('Leno')
-    #
-    # # show amount of the product name
-    # shop.get_amount_of_product_name('NT45')
-
-    # show list of the all products
-    shop.get_list_of_all_products()
-
-    # create workers
-    w1 = Worker(name='Marcin', surname='Kowalski')
-    w2 = Worker(name='Damian', surname='Kałuża')
-
-    # show list of workers
-    Worker.display_list_of_workers()
-
-    # create customer
-    c1 = Customer(name='Piotr', surname='Kowalcze')
-    # c2 = Customer(name='Kasia', surname='Maklowicz')
-
-    # show list of customers
-    Customer.display_list_of_customers()
-
-    # add products to shopping cart
-    # c1.add_to_shopping_cart('X23', shop)
-    # c1.add_to_shopping_cart('A34', shop)
-
-    # show added products
-    c1.list_shopping_cart()
-
-    # delete product from shopping cart
-    c1.del_from_shopping_cart('A34')
-    c1.list_shopping_cart()
-
-    c1.pay_for_items()
-
-    print(c1.__dict__)
+    print(f'Shop sold {len(shop._sold_products)} products, earned: {revenue}')
 
 
 if __name__ == '__main__':
