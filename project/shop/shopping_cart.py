@@ -14,7 +14,7 @@ class ShoppingCart:
             Function updates product with action:
             - `add` - add one another the same product
             - `del` - remove one product
-            - `n` - how many
+            - `n` - how many times
         """
         if action == 'add' and n == 1:
             self.items.append(product)
@@ -22,7 +22,7 @@ class ShoppingCart:
             for i in range(n):
                 self.items.append(product)
         else:
-            raise
+            raise ValueError('Value of `n` must be positive.')
         if action == 'remove':
             self.items.remove(product)
 
