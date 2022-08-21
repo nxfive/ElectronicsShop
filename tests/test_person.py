@@ -1,5 +1,5 @@
 import unittest
-from project.person import Person
+from project.person.person import Person
 from parameterized import parameterized
 
 test_params = [
