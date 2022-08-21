@@ -1,6 +1,6 @@
 import random
 
-from person.customer import Customer
+from project.person.customer import Customer
 from project.utils.errors import NoSpaceError, ItemNotFoundError
 from prettytable import PrettyTable
 from project.person.worker import Worker
@@ -139,9 +139,8 @@ class Shop:
         table_of_all_products.field_names = ['No.', 'Category', 'Brand', 'Name', 'Price']
         table_of_all_products.sortby = 'Category'
         for index, product in enumerate(self.products):
-            if not product.__dict__ == {}:
-                table_of_all_products.add_row([index + 1, product.__class__.__name__, product.brand, product.prod_name,
-                                               '{:.2f}'.format(product.price_with_margin)])
+            table_of_all_products.add_row([index + 1, product.__class__.__name__, product.brand, product.prod_name,
+                                          '{:.2f}'.format(product.price_with_margin)])
         print(table_of_all_products)
         Shop._get_specifics_of_products(self)
 
@@ -162,3 +161,12 @@ class Shop:
         for index, customer in enumerate(Customer.customers):
             customers_table.add_row([index+1, customer.name, customer.surname, customer.shopping_cart])
         print(customers_table)
+
+    @staticmethod
+    def display_list_of_workers():
+        workers_table = PrettyTable()
+        workers_table.title = "LIST OF WORKERS"
+        workers_table.field_names = ['No.', 'Name', 'Surname', 'Position', 'Identity']
+        for index, worker in enumerate(Worker.workers):
+            workers_table.add_row([index+1, worker.name, worker.surname, worker.job_position, worker.identity])
+        print(workers_table)
