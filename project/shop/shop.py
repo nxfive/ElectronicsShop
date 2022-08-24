@@ -12,7 +12,7 @@ from project.product.phone import Phone
 class Shop:
 
     _number_of_jobs = 5
-    _sold_products = []
+    _sold_products_all = []
 
     def __init__(self, database,  name, max_capacity, amount_of_workers):
         self._database = database
@@ -24,6 +24,7 @@ class Shop:
         self._amount_of_workers = amount_of_workers
         self._workers = self._create_workers()
         self._products = self._create_products()
+        self._sold_products_by_instance = []
 
     @property
     def database(self):
@@ -70,7 +71,7 @@ class Shop:
     def _create_workers(self):
         workers = []
         for _ in range(self.amount_of_workers):
-            worker = Worker(*(create_worker()))
+            worker = Worker(self, *(create_worker()))
             workers.append(worker)
         return workers
 
@@ -79,10 +80,10 @@ class Shop:
         for _ in range(self.max_capacity):
             class_choice = random.choice(('Phone', 'Laptop'))
             if class_choice == 'Phone':
-                new_product = Phone(*(create_product('Phone')))
+                new_product = Phone(self, *(create_product('Phone')))
                 products.append(new_product)
             else:
-                new_product = Laptop(*(create_product('Laptop')))
+                new_product = Laptop(self, *(create_product('Laptop')))
                 products.append(new_product)
         return products
 
@@ -94,10 +95,10 @@ class Shop:
             if len(self.products) < self.max_capacity:
                 class_choice = random.choice(('Phone', 'Laptop'))
                 if class_choice == 'Phone':
-                    phone = Phone(*(create_product('Phone')))
+                    phone = Phone(self, *(create_product('Phone')))
                     self.products.append(phone)
                 else:
-                    laptop = Laptop(*(create_product('Laptop')))
+                    laptop = Laptop(self, *(create_product('Laptop')))
                     self.products.append(laptop)
                 print('Product has been added.')
             else:
