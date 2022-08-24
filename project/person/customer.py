@@ -41,10 +41,6 @@ class Customer(Person):
         return self._entry_time
 
     @property
-    def shop(self):
-        return self._shop
-
-    @property
     def shopping_cart(self):
         return self._shopping_cart
 
@@ -55,7 +51,7 @@ class Customer(Person):
         self.pay_for_items()
 
     def pay_for_items(self):
-        time.sleep(random.randint(1, 5))
+        # time.sleep(random.randint(1, 5))
         total = 0
         while self._is_paid is False:
             for product in self.shopping_cart.items:
