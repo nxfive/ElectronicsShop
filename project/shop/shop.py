@@ -65,6 +65,14 @@ class Shop:
         validate(value, 'max_capacity')
         self._max_capacity = value
 
+    @property
+    def sold_products_by_instance(self):
+        return self._sold_products_by_instance
+
+    @property
+    def sold_products_all(self):
+        return self._sold_products_all
+
     def show_max_capacity(self):
         print(f'Maximum shop capacity: {self.max_capacity}')
 
