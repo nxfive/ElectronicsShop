@@ -19,10 +19,14 @@ class Customer(Person):
         self._exit_time = None
         self._bill = None
         Person.customers.append(self)
-        insert_data(self, database, 'customers')
+        insert_data(self, self.shop.database, 'customers')
 
     def __str__(self):
         return f'{super().__str__()}, ENTRY TIME: {self.entry_time}'
+
+    @property
+    def shop(self):
+        return self._shop
 
     @property
     def email(self):

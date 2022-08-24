@@ -10,7 +10,7 @@ class Product:
 
     _trade_margin = 0.25
 
-    def __init__(self, brand, prod_name, net_price=None, price_with_margin=None):
+    def __init__(self, shop_instance, brand, prod_name, net_price=None, price_with_margin=None):
         self.identity = uuid.uuid4().fields[-1]
         validate(brand, 'brand')
         self._brand = brand
@@ -18,6 +18,7 @@ class Product:
         self._prod_name = prod_name
         self._net_price = net_price
         self._price_with_margin = price_with_margin
+        self._shop = shop_instance
 
         if net_price:
             validate(net_price, 'net_price')
@@ -30,7 +31,7 @@ class Product:
             self._price_with_margin = None
             self._price_with_margin_eur = None
             self._price_with_margin_usd = None
-        insert_data(self, database, 'products')
+        insert_data(self, self.shop.database, 'products')
 
     def __str__(self):
         return f'[{self.__class__.__name__}] brand: {self.brand}, prod_name: {self.prod_name}'
@@ -52,6 +53,10 @@ class Product:
     def _convert_price_with_margin_to_usd(self):
         if self.price_with_margin:
             self._price_with_margin_usd = round((self.price_with_margin / Product._pln_to_usd), 2)
+
+    @property
+    def shop(self):
+        return self._shop
 
     @property
     def brand(self):
