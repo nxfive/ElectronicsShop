@@ -36,11 +36,7 @@ class Database:
         self.connection.commit()
 
 
-database = Database('shopdata.db')
-
-
-def create_database():
-    global database
+def create_database(database):
 
     database.create_table('workers', 'identity INTEGER, name TEXT, surname TEXT, job_position TEXT')
 
@@ -74,6 +70,3 @@ def insert_data(obj_instance, database_instance, table_name: str):
                                               obj_instance.brand, obj_instance.prod_name, obj_instance.net_price,
                                               obj_instance.price_with_margin,
                                               obj_instance.price_with_margin - obj_instance.net_price))
-
-
-create_database()
