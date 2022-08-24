@@ -14,7 +14,8 @@ class Shop:
     _number_of_jobs = 5
     _sold_products = []
 
-    def __init__(self, name, max_capacity, amount_of_workers):
+    def __init__(self, database,  name, max_capacity, amount_of_workers):
+        self._database = database
         validate(name, 'name')
         self._name = name.capitalize()
         validate(max_capacity, 'max_capacity')
@@ -23,6 +24,10 @@ class Shop:
         self._amount_of_workers = amount_of_workers
         self._workers = self._create_workers()
         self._products = self._create_products()
+
+    @property
+    def database(self):
+        return self._database
 
     @property
     def products(self):
